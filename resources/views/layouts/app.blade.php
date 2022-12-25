@@ -25,6 +25,18 @@
   <link rel="stylesheet" href="/admin/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="/admin/plugins/summernote/summernote-bs4.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="/admin/plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="/admin/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
+  <link rel="stylesheet" href="/admin/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  @livewireStyles
+ 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -145,21 +157,21 @@
                
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
+              <i class="nav-icon fas fa-users"></i>
               <p>
-                Заметки
+                Должники
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/forms/general.html" class="nav-link">
+                <a href="{{ route('debtor.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Все</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/forms/advanced.html" class="nav-link">
+                <a href="{{ route('debtor.create') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Создать</p>
                 </a>
@@ -167,28 +179,41 @@
               
             </ul>
           </li>
+
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
+            <a href="{{ route('payment.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-coins"></i>
               <p>
-                Журнал
-                <i class="fas fa-angle-left right"></i>
+                Долги
               </p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/tables/simple.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Список долгов</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/tables/data.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Создать</p>
-                </a>
-              </li>
-            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{ route('received.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-check"></i>
+              <p>
+                Оплаченные долги
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{ route('debtor-report') }}" class="nav-link">
+              <i class="nav-icon fas fa-newspaper"></i>
+              <p>
+                Отчет должника
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{ route('transaction.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                История дня
+              </p>
+            </a>
           </li>
           
           <li class="nav-item">
@@ -216,9 +241,33 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/mailbox/compose.html" class="nav-link">
+                <a href="{{ route('user.create') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Создать</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-lock"></i>
+              <p>
+                Аккаунт
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('user.index') }}" class="nav-link">
+                  <i class="nav-icon fas fa-user-circle"></i>
+                  <p>Профиль</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('user.create') }}" class="nav-link">
+                  <i class="nav-icon fas fa-circle"></i>
+                  <p>Выйти</p>
                 </a>
               </li>
             </ul>
@@ -235,7 +284,9 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
+   
     @yield('content')
+    
   </div>
   <!-- /.content-wrapper -->
   
@@ -282,5 +333,23 @@
 <script src="/admin/dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="/admin/dist/js/pages/dashboard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<!-- Popperjs -->
+<script type="text/javascript" src="https://unpkg.com/moment"></script>
+<script src="/admin/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#datetimepicker2').datetimepicker({
+      format:  'D/M/Y',
+      locale: 'ru'
+      
+    });
+  });
+</script>
 </body>
+@livewireScripts
+@stack('scripts')
 </html>

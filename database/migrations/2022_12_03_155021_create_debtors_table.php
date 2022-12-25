@@ -1,10 +1,11 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClientsTable extends Migration
+class CreateDebtorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +14,13 @@ class CreateClientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('clients', function (Blueprint $table) {
+        Schema::create('debtors', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->integer('phone')->unique();
+            $table->integer('reserve_phone')->nullable();
+            $table->decimal('balance','10','2')->default('0.00');
+            $table->foreignIdFor(User::class);
             $table->timestamps();
         });
     }
@@ -28,6 +32,6 @@ class CreateClientsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('clients');
+        Schema::dropIfExists('debtors');
     }
 }

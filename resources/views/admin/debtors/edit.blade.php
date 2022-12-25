@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'edit users')
+@section('title', 'edit debtors')
 
 @section('content')
 
@@ -10,25 +10,25 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form action="{{route('user.update', $user)}}" method="POST">
+        <form action="{{route('debtor.update', $debtor)}}" method="POST">
             @csrf
             @method('PATCH')
             <div class="card-body">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Имя</label>
-                    <input type="text" name="name" value="{{ $user->name }}" class="form-control" id="exampleInputEmail1" placeholder="Enter name">
+                    <input type="text" name="name" value="{{ $debtor->name }}" class="form-control" id="exampleInputEmail1" placeholder="Enter name">
                 </div>
                 
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Email</label>
-                    <input type="email" name="email" value="{{ $user->email }}" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                    <label for="exampleInputEmail1">Телефон</label>
+                    <input type="phone" name="phone" value="{{ $debtor->phone }}" class="form-control" id="exampleInputEmail1" placeholder="Enter phone">
                 </div>
                 
             </div>
             <!-- /.card-body -->
 
             <div class="card-footer">
-                <a href="{{ route('user.index') }}">
+                <a href="{{ route('debtor.index') }}">
                     <button type="submit" class="btn btn-warning">назад</button>
                 </a>
                 <button type="submit" class="btn btn-primary">изменить</button>

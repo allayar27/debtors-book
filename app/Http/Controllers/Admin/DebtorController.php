@@ -3,47 +3,37 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DebtorRequest;
+use App\Http\Requests\DebtorUpdate;
+use App\Models\Debtor;
 use Illuminate\Http\Request;
 
-class DebtPaymentController extends Controller
+class DebtorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
-        //
+        return view('admin.debtors.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function create()
     {
-        //
+        return view('admin.debtors.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    
+
+    public function store(DebtorRequest $request)
     {
-        //
+        $valid = $request->validated();
+        $create = Debtor::create($valid);
+        if($create){
+            return redirect(route('debtor.index'));
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
         //
@@ -57,7 +47,8 @@ class DebtPaymentController extends Controller
      */
     public function edit($id)
     {
-        //
+        $debtor = Debtor::findOrFail($id);
+        return view('admin.debtors.edit', compact('debtor'));
     }
 
     /**
@@ -67,9 +58,14 @@ class DebtPaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(DebtorUpdate $request, $id)
     {
-        //
+        $params = $request->validated();
+        $update = Debtor::where('id', $id)->update($params);
+        if($update){
+            return redirect(route('debtor.index'));
+        }
+
     }
 
     /**

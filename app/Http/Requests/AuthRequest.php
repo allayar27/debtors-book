@@ -27,17 +27,16 @@ class AuthRequest extends FormRequest
 
             'email' => 'required|string|email|exists:users',
             'password' => 'required|string|min:8'
-            
+
         ];
     }
 
     public function messages()
     {
         return [
-            'email.exists' => 'Неверный адрес электронной почты!',
+            'email.exists' => 'Пользователь с таким логином не существует!',
             'password.min' => 'Пароль должен быть не менее 8 символов!',
-            
-            
+
         ];
     }
 }
