@@ -22,7 +22,6 @@ class DebtorFactory extends Factory
         return [
             'name' => $this->faker->name,
             'phone' => $this->faker->numberBetween('100', '900'),
-            'user_id' => 1
         ];
     }
 }

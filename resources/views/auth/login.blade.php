@@ -13,16 +13,18 @@
   <link rel="stylesheet" href="/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/admin/dist/css/adminlte.css" href="/admin/plugins/css/adminlte.min.css">
+  <!--Toastr-->
+  <link rel="stylesheet" type="text/css" href="{{ asset('/admin/plugins/toastr/toastr.min.css') }}">
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="{{ url('/') }}" class="h1"><b>Admin</b>LTE</a>
+      <a href="{{ url('/') }}" class="h1"><b>Admin</b></a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">Войдите, чтобы начать сеанс</p>
 
       <form action="{{ route('login') }}" method="POST">
         @csrf
@@ -48,20 +50,20 @@
             <div class="icheck-primary">
               <input type="checkbox" id="remember">
               <label for="remember">
-                Remember Me
+                Запомнить меня
               </label>
             </div>
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" class="btn btn-primary btn-block">Вход</button>
           </div>
           <!-- /.col -->
         </div>
       </form>
 
       <p class="mb-1">
-        <a href="forgot-password.html">I forgot my password</a>
+        <a href="{{ route('forgot') }}">Я забыл свой пароль</a>
       </p>
 
     </div>
@@ -77,5 +79,20 @@
 <script src="/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/admin/dist/js/adminlte.min.js"></script>
+<!-- Toastr -->
+<script type="text/javascript" src="{{ asset('/admin/plugins/toastr/toastr.min.js') }}"></script>
+
+<script>
+  $(document).ready(function() {
+    toastr.options = {
+      "positionClass": "toast-bottom-right",
+    }
+
+    @if(Session::has('success'))
+      toastr.success('{{ Session::get('success') }}');
+    @endif
+
+  });
+</script>
 </body>
 </html>

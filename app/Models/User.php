@@ -8,24 +8,29 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
-   
+
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'avatar'
     ];
 
-    
+
     protected $hidden = [
         'remember_token',
     ];
 
-    
+
     protected $casts = [
         'email_verified_at' => 'datetime',
+    ];
+
+    protected $appends = [
+        'avatar_url'
     ];
 
 
@@ -47,8 +52,21 @@ class User extends Authenticatable
     }
 
 
+
     public function getCreatedAtAttribute($value)
     {
-        return Carbon::parse($value)->format('d/m/y H:i:s');
+        return Carbon::parse($value)->format('d/m/Y');
     }
+
+
+    public function getAvatarUrlAttribute()
+    {
+        if($this->avatar && Storage::disk('avatars')->exists($this->avatar)) {
+            return asset('/storage/avatars/'.$this->avatar);
+        }
+        return asset('not_found.png');
+    }
+
+
+
 }

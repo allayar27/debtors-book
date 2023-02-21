@@ -14,7 +14,9 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
-        "livewire/livewire": "^2.10"
+        "livewire/livewire": "^2.10",
+        "pusher/pusher-php-server": "^7.2",
+        "spatie/laravel-query-builder": "^4.0"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",

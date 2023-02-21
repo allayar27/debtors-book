@@ -1,40 +1,41 @@
 <?php
 
-use App\Http\Controllers\Admin\DebtorController;
-use App\Http\Controllers\Admin\HomeController;
-use App\Http\Controllers\Admin\PaymentController;
-use App\Http\Controllers\Admin\ReceivedController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Livewire\DebtorHistory;
 use App\Http\Livewire\DebtorReport;
-use App\Models\Transaction;
+use App\Http\Livewire\Debtors;
+use App\Http\Livewire\Debts;
+use App\Http\Livewire\Home;
+use App\Http\Livewire\Notifications;
+use App\Http\Livewire\PaidDebts;
+use App\Http\Livewire\TransactionHistory;
+use App\Http\Livewire\UserProfile;
+use App\Http\Livewire\Users;
 use Illuminate\Support\Facades\Route;
 
 
+Route::middleware('guest')->group(function () {
+    Route::get('/', [AuthController::class, 'index'])->name('/');
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::get('/forgot', [AuthController::class, 'showForgotForm'])->name('forgot');
+    Route::post('/forgot_process', [AuthController::class, 'forgot'])->name('forgot_process');
+});
 
-
-
-
-
-
-Route::get('/', [AuthController::class, 'index'])->name('/');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::middleware('auth')->prefix('home')->group(function () {
 
-    Route::get('/', [HomeController::class, 'index'])->name('homeAdmin');
-    Route::resource('user', UserController::class);
-    Route::resource('debtor', DebtorController::class);
+    Route::get('/', Home::class)->name('dashboard');
+    Route::get('/transactions_history', TransactionHistory::class)->name('transaction-history');
+    Route::get('debtor_history/{id}', DebtorHistory::class)->name('debtor-history');
+    Route::get('/debtor_report', DebtorReport::class)->name('debtor-report');
+    Route::get('/debtors', Debtors::class)->name('debtors');
+    Route::get('/users', Users::class)->name('users');
+    Route::get('/debts', Debts::class)->name('debts');
+    Route::get('/paid_debts', PaidDebts::class)->name('paid-debts');
+    Route::get('/notifications', Notifications::class)->name('notifications');
+    Route::get('/user/profile', UserProfile::class)->name('user.profile');
 
-    Route::get('/transaction', function(){
-        $transactions = Transaction::all();
-        return view('admin.transactions.daybook', compact('transactions'));
-    })->name('transaction.index');
-
-    Route::resource('payment', PaymentController::class);
-    Route::resource('received', ReceivedController::class);
-    //Route::get('/debtor-report', DebtorReport::class)->name('debtor-report');
-    Route::get('/debtor-report', function() {
-        return view('admin.transactions.debtor_report');
-    })->name('debtor-report');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
+
+

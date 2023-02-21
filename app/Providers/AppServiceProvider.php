@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Actions\Contracts\UpdatesUserProfileInformation;
+use App\Actions\UpdateUserProfileInformation;
+use App\Models\Debtor;
+use App\Models\User;
+use App\Observers\DebtorObserver;
+use App\Observers\UserObserver;
 use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,7 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(UpdatesUserProfileInformation::class, function ($app) {
+            return new UpdateUserProfileInformation();
+        });
     }
 
     /**
@@ -24,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        setlocale(LC_ALL, 'uz_UZ.utf8');
-        Carbon::setLocale(config('app.locale'));
+        User::observe(UserObserver::class);
+        Debtor::observe(DebtorObserver::class);
     }
 }

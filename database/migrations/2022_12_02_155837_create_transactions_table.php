@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Debtor;
-use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -23,7 +22,7 @@ class CreateTransactionsTable extends Migration
             $table->decimal('pay_amount','10','2')->default('0.00');
             $table->decimal('received_amount','10','2')->default('0.00');
             $table->text('transaction_remark');
-            $table->string('transaction_type')->default('p');
+            $table->string('transaction_type');
             $table->timestamps();
         });
     }

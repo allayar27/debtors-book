@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Models;
 
 use Carbon\Carbon;
-use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+
 
 class Transaction extends Model
 {
@@ -25,6 +28,7 @@ class Transaction extends Model
         return $this->belongsTo(User::class);
     }
 
+    
     public function debtor()
     {
         return $this->belongsTo(Debtor::class);
@@ -32,18 +36,42 @@ class Transaction extends Model
 
     public function getCreatedAtAttribute($value)
     {
-        return Carbon::parse($value)->format('d/m/y H:i:s');
+        return Carbon::parse($value)->format('d/m/Y H:i');
     }
 
 
-    public function scopeSearch($query, $term)
+    public function scopeSearch($query, $term):void
     {
-        $query->WhereHas('debtor', function($query) use ($term)
-        {
+        $query->WhereHas('debtor', function($query) use ($term) {
             $query->where('name', 'like', '%'. $term.'%');
         });
 
     }
 
-    
+    public function scopeTotalDebts():float
+    {
+        return DB::table('transactions')->where('transaction_type', 'credit')->get()->sum('pay_amount');
+    }
+
+    public function scopeTotalDebtsPaid():float
+    {
+        return DB::table('transactions')->where('transaction_type', 'debit')->get()->sum('received_amount');
+    }
+
+    public function scopeShowDebtsPercent()
+    {
+       $credit = $this->scopeTotalDebts();
+       $debit = $this->scopeTotalDebtsPaid();
+       $persent = round(($credit - $debit) * 100 / $credit);
+       return $persent;
+    }
+
+    public function scopeShowPaidDebtsPercent()
+    {
+       $credit = $this->scopeTotalDebts();
+       $debit = $this->scopeTotalDebtsPaid();
+       $persent = round(($debit * 100) / $credit);
+       return $persent;
+    }
+
 }

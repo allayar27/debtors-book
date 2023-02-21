@@ -3,9 +3,6 @@
 namespace App\Http\Livewire;
 
 use App\Models\Debtor;
-use App\Models\Transaction;
-use Carbon\Carbon;
-use Illuminate\Pagination\Paginator;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,25 +10,32 @@ class DebtorReport extends Component
 {
     use WithPagination;
 
+    protected $paginationTheme = 'bootstrap';
     public $search;
-    public $currentPage = 1;
-    
+    public $debtors;
+
+
+    public function mount()
+    {
+        $this->debtors = Debtor::with('transactions')->orderBy('created_at', 'desc')->get();
+    }
+
+
+
+    public function search()
+    {
+       $this->debtors = Debtor::when($this->search, function($query) {
+            $query->where('name', 'like', '%'. $this->search.'%');
+        })->get();
+    }
+
+
+
+
     public function render()
     {
-        return view('livewire.debtor-report', [
-            'transactions' => Transaction::where(function($q) {
-                $q->search(trim($this->search));
-            })->orderBy('created_at', 'desc')->paginate(5)
-        ]);
+        return view('livewire.reports.debtor-report');
     }
 
-
-    public function setPage($url)
-    {
-        $this->currentPage = explode('page=', $url)[1];
-        Paginator::currentPageResolver(function() {
-            return $this->currentPage;
-        });
-    }
 
 }
