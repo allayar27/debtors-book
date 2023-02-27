@@ -6,7 +6,7 @@
         <div class="col-sm-6">
           <h1 class="m-0">Админ Панель</h1>
         </div><!-- /.col -->
-        
+
       </div><!-- /.row -->
     </div><!-- /.container-fluid -->
 </div>
@@ -77,7 +77,7 @@
         <div class="col-12 col-sm-6 col-md-3">
           <div class="info-box mb-3">
             <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
-  
+
             <div class="info-box-content">
               <span class="info-box-text">Пользователи</span>
               <span class="info-box-number">{{ $user }}</span>
@@ -89,7 +89,7 @@
         <div class="col-12 col-sm-6 col-md-3">
           <div class="info-box mb-3">
             <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-address-book"></i></span>
-  
+
             <div class="info-box-content">
               <span class="info-box-text">Должники</span>
               <span class="info-box-number">{{ $debtor->count() }}</span>
@@ -98,14 +98,14 @@
           </div>
           <!-- /.info-box -->
         </div>
-        
+
         <!-- ./col -->
       </div>
       <div class="card-footer">
         <div class="row">
           <div class="col-sm-6 col-6">
             <div class="description-block border-right">
-              <span class="description-percentage text-danger"><i class="fas fa-{{ $transaction->showDebtsPercent() >= 50 ? 'caret-up' : 'caret-down'}}"></i> {{ $transaction->showDebtsPercent() }}%</span>
+              <span class="description-percentage text-danger"><i class="fas fa-{{ $transaction->showDebtsPercent() >= 0 ? 'caret-up' : 'caret-down'}}"></i> {{ $transaction->showDebtsPercent() }}%</span>
               <h5 class="description-header">{{ $transaction->totalDebts() }} UZS</h5>
               <span class="description-text">Общая сумма долгов</span>
             </div>
@@ -143,7 +143,7 @@
       </div>
       <!-- /.row -->
       <!-- Main row -->
-      
+
       <!-- /.row (main row) -->
     </div><!-- /.container-fluid -->
 </section>

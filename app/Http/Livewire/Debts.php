@@ -62,7 +62,7 @@ class Debts extends Component
 
     public function create()
     {
-        $validate =$this->validate();
+        $validate = $this->validate();
         $debtor =  Debtor::find($this->debtor_id);
         $debtor->update(['balance' => $debtor->balance - $validate['pay_amount']]);
         Transaction::create($validate);

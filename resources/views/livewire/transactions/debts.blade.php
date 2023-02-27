@@ -91,7 +91,7 @@
                         @endforeach
                     </tbody>
                   </table>
-{{--                  --}}{{-- <div class="card-footer d-flex justify-content-end">--}}
+{{--                   <div class="card-footer d-flex justify-content-end">--}}
 {{--                    {{ $transactions->links() }}--}}
 {{--                  </div> --}}
                 </div>
@@ -161,7 +161,6 @@
               </button>
             </div>
             <div class="modal-body">
-
               <div wire:ignore class="form-group">
                 <label>Имя должника</label><br>
                 <select  class="select2" wire:model.defer="debtor_id" name="debtor_id" style="width: 70%;">

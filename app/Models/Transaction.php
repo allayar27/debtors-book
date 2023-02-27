@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+
 
 namespace App\Models;
 
@@ -15,11 +15,11 @@ class Transaction extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 
-        'debtor_id', 
-        'pay_amount', 
-        'received_amount', 
-        'transaction_remark', 
+        'user_id',
+        'debtor_id',
+        'pay_amount',
+        'received_amount',
+        'transaction_remark',
         'transaction_type',
     ];
 
@@ -28,7 +28,7 @@ class Transaction extends Model
         return $this->belongsTo(User::class);
     }
 
-    
+
     public function debtor()
     {
         return $this->belongsTo(Debtor::class);
@@ -58,20 +58,24 @@ class Transaction extends Model
         return DB::table('transactions')->where('transaction_type', 'debit')->get()->sum('received_amount');
     }
 
-    public function scopeShowDebtsPercent()
+    public function scopeShowDebtsPercent(): float
     {
        $credit = $this->scopeTotalDebts();
        $debit = $this->scopeTotalDebtsPaid();
-       $persent = round(($credit - $debit) * 100 / $credit);
-       return $persent;
+       if($credit > 0){
+           return round(($credit - $debit) * 100 / $credit);
+       }
+        return 0;
     }
 
     public function scopeShowPaidDebtsPercent()
     {
        $credit = $this->scopeTotalDebts();
        $debit = $this->scopeTotalDebtsPaid();
-       $persent = round(($debit * 100) / $credit);
-       return $persent;
+       if($credit > 0) {
+           return ($debit * 100) / $credit;
+       }
+       return 0;
     }
 
 }
