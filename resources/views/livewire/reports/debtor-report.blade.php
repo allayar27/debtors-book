@@ -30,25 +30,31 @@
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach ($debtors as $debtor)
+                    @forelse($debtors as $debtor)
                         <tr>
                             <th scope="row">{{ $loop->iteration }}</th>
                             <td>{{ $debtor->name }}</td>
-                            <td>{{ $debtor->transactions->sum('pay_amount') }}</td>
-                            <td>{{ $debtor->transactions->sum('received_amount') }}</td>
-                            <td>{{ $debtor->balance }}</td>
+                            <td>{{ $debtor->transactions->sum('pay_amount') }} UZS</td>
+                            <td>{{ $debtor->transactions->sum('received_amount') }} UZS</td>
+                            <td>{{ $debtor->balance }} UZS</td>
                             <td>
                                 <a href="{{ route('debtor-history', $debtor->id) }}" class="btn btn-primary btn-sm">
                                 подробнo
                                 </a>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="6" style="text-align: center" class="px-6 py-4 whitespace-no-wrap text-sm leading">
+                                {{ __('No data not found') }}
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
-            {{-- <div class="card-footer d-flex justify-content-end">
+            <div class="card-footer d-flex justify-content-end">
                 {{ $debtors->links() }}
-            </div> --}}
+            </div>
         </div><!-- /.container-fluid -->
     </section>
 </div>	

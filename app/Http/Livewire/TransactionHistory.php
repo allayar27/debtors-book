@@ -5,47 +5,49 @@ namespace App\Http\Livewire;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class TransactionHistory extends Component
 {
-    public $transactions;
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
+    private $transactions;
     public $from, $to;
     public $search;
 
 
-    public function mount()
-    {
-        $this->transactions = Transaction::orderBy('created_at', 'desc')->get();
-    }
+    
 
 
     public function getpaidDebts()
     {
-        $this->transactions = Transaction::where('transaction_type', 'debit')->orderBy('created_at', 'desc')->get();
+        $this->transactions = Transaction::where('transaction_type', 'debit')->orderBy('created_at', 'desc');
     }
 
 
     public function getUnpaidDebts()
     {
-        $this->transactions = Transaction::where('transaction_type', 'credit')->orderBy('created_at', 'desc')->get();
+        $this->transactions = Transaction::where('transaction_type', 'credit')->orderBy('created_at', 'desc');
     }
 
     
     public function getTodayTransactions()
     {
-        $this->transactions = Transaction::whereDate('created_at', Carbon::today())->orderBy('created_at', 'desc')->get();
+        $this->transactions = Transaction::whereDate('created_at', Carbon::today())->orderBy('created_at', 'desc');
     }
 
 
     public function getYesterdayTransactions()
     {
-        $this->transactions = Transaction::whereDate('created_at', Carbon::yesterday())->orderBy('created_at', 'desc')->get();
+        $this->transactions = Transaction::whereDate('created_at', Carbon::yesterday())->orderBy('created_at', 'desc');
     }
 
 
     public function getCurrentMonthTransactions()
     {
-        $this->transactions = Transaction::whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->get();
+        $this->transactions = Transaction::whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()]);
     }
 
 
@@ -53,14 +55,14 @@ class TransactionHistory extends Component
     {
         $firstDayofPreviousMonth = Carbon::now()->startOfMonth()->subMonth();
         $lastDayofPreviousMonth = Carbon::now()->subMonth()->endOfMonth();
-        $this->transactions = Transaction::whereBetween('created_at', [$firstDayofPreviousMonth, $lastDayofPreviousMonth])->get();
+        $this->transactions = Transaction::whereBetween('created_at', [$firstDayofPreviousMonth, $lastDayofPreviousMonth]);
     }
 
 
     public function getLastSevenDaysTransactions()
     {
         $date = Carbon::today()->subDays(7);
-        $this->transactions = Transaction::whereDate('created_at', '>=', $date)->get();
+        $this->transactions = Transaction::whereDate('created_at', '>=', $date);
     }
 
 
@@ -70,7 +72,7 @@ class TransactionHistory extends Component
             return $query->whereDate('created_at', '>=', $from);
         })->when($this->to, function($query, $to) {
             return $query->whereDate('created_at', '<=', $to);
-        })->get();
+        });
     }
 
 
@@ -78,12 +80,17 @@ class TransactionHistory extends Component
     {
         $this->transactions = Transaction::when($this->search, function($query) {
             $query->search(trim($this->search));
-        })->get();
+        });
     }
 
 
     public function render()
     {
-        return view('livewire.transactions.transaction-history');
+        if($this->transactions === null){
+            $this->transactions = Transaction::orderBy('created_at', 'desc');
+        }
+        return view('livewire.transactions.transaction-history', [
+            'transactions' => $this->transactions->paginate(5)
+        ]);
     }
 }

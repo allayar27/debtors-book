@@ -29,11 +29,7 @@
                 <span class="float-right text-muted text-sm">{{ \Carbon\Carbon::parse($notification['created_at'])->diffForHumans() }}</span>
             </a>
             @endforeach
-{{--            <div class="dropdown-divider"></div>--}}
-{{--            <a href="#" class="dropdown-item">--}}
-{{--                <i class="fas fa-file mr-2"></i> 3 new reports--}}
-{{--                <span class="float-right text-muted text-sm">2 days</span>--}}
-{{--            </a>--}}
+
             <div class="dropdown-divider"></div>
             <a href="{{ route('notifications') }}" class="dropdown-item dropdown-footer">See All Notifications</a>
             @else

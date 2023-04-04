@@ -22,7 +22,7 @@
                       </button>
                       <div class="dropdown-menu" role="menu" style="">
                         <a wire:click.prevent="deleteSelectedRows" class="dropdown-item" href="#">удалить выбранные</a>
-                        
+
                       </div>
                     </div>
                     <span class="ml-2" style="color: blue">выбрано: {{ count($selectedRows) }}</span>
@@ -46,7 +46,7 @@
             </div>
 
         </div>
-            
+
               <table class="table table-striped">
                   <thead>
                   <tr>
@@ -65,7 +65,7 @@
                   </tr>
                   </thead>
                   <tbody>
-                      @foreach ($debtors as $index => $debtor)
+                      @forelse($debtors as $index => $debtor)
                           <tr>
                             <th scope="row">
                               <div  class="icheck-primary d-inline ml-2">
@@ -76,7 +76,7 @@
                               <th scope="row">{{ $debtors->firstItem() + $index }}</th>
                               <td>{{ $debtor->name }}</td>
                               <td>{{ $debtor->phone }}</td>
-                              <td>{{ $debtor->balance }}</td>
+                              <td>{{ $debtor->balance }} UZS</td>
                               <td>{{ $debtor->created_at }}</td>
                               <td>
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#showInfoModal" class="btn btn-info btn-sm" wire:click="showDebtorInfo({{ $debtor->id }})" >
@@ -95,7 +95,13 @@
                                   </button>
                               </td>
                           </tr>
-                      @endforeach
+                      @empty
+                        <tr>
+                            <td colspan="7" style="text-align: center" class="px-6 py-4 whitespace-no-wrap text-sm leading">
+                                {{ __('No data not found') }}
+                              </td>
+                        </tr>
+                      @endforelse
                   </tbody>
               </table>
               <div class="card-footer d-flex justify-content-end">
@@ -222,7 +228,7 @@
                 </div>
           </div>
       </section>
-</div>		 
+</div>
 
 @push('scripts')
 <script>

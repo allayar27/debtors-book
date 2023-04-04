@@ -40,8 +40,11 @@ class Debtor extends Model
     public function scopeShowDebtorsPercentWhereHasDebts()
     {
         $total = DB::table('debtors')->count();
-        $percent = round($this->whereHasDebts()->count() * 100 / $total);
-        return $percent;
+        if($total > 0){
+            $percent = round($this->whereHasDebts()->count() * 100 / $total);
+            return $percent;
+        }
 
+        return 0;
     }
 }

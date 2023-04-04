@@ -6,30 +6,22 @@ use App\Models\Debtor;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
-
+use Livewire\WithPagination;
+ 
 
 class Debts extends Component
 {
+    use WithPagination;
 
-    //protected $paginationTheme = 'bootstrap';
+    protected $paginationTheme = 'bootstrap';
     protected $listeners = ['deleteConfirmed' => 'delete'];
-    public $transactions;
-    public $debtors;
+    private $transactions;
     public $search;
     public $from, $to;
     public  $user_id, $debtor_id, $pay_amount,  $transaction_remark, $transaction_type, $transaction_id;
-    public $selectedRows = [];
-    public $selectPageRows = false;
+    
 
 
-    public function mount()
-    {
-        $this->debtors = Debtor::orderBy('created_at', 'DESC')->get();
-        $this->transactions = Transaction::where('transaction_type', 'credit')
-                                        ->orderBy('created_at', 'DESC')
-                                        ->get();
-
-    }
 
     protected function rules()
     {
@@ -55,8 +47,8 @@ class Debts extends Component
 
     public function addNew()
     {
-        $this->dispatchBrowserEvent('show-create-modal');
         $this->resetInput();
+        $this->emit('open-create-modal');
     }
 
 
@@ -72,7 +64,6 @@ class Debts extends Component
 
 
 
-
     public function edit(int $id)
     {
         $this->resetInput();
@@ -81,6 +72,7 @@ class Debts extends Component
         $this->debtor_id = $debt->debtor_id;
         $this->pay_amount = $debt->pay_amount;
         $this->transaction_remark = $debt->transaction_remark;
+        $this->emit('open-edit-modal');
     }
 
 
@@ -137,7 +129,7 @@ class Debts extends Component
             return $query->whereDate('created_at', '>=', $from)->where('transaction_type', 'credit');
         })->when($this->to, function($query, $to) {
             return $query->whereDate('created_at', '<=', $to)->where('transaction_type', 'credit');
-        })->get();
+        });
     }
 
 
@@ -145,13 +137,20 @@ class Debts extends Component
     {
         $this->transactions = Transaction::when($this->search, function($query) {
             $query->where('transaction_type', 'credit')->search(trim($this->search));
-        })->get();
+        });
     }
 
 
     public function render()
     {
-        return view('livewire.transactions.debts');
+        if ($this->transactions === null){
+            $this->transactions = Transaction::where('transaction_type', 'credit')
+                ->orderBy('created_at', 'DESC');
+        }
+        return view('livewire.transactions.debts', [
+            'transactions' => $this->transactions->paginate(5),
+            'debtors' => Debtor::orderBy('created_at', 'DESC')->get()
+        ]);
     }
 
 

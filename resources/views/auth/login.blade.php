@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Log in (v2)</title>
+  <title>Debt Notes | Log in </title> 
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -29,7 +29,7 @@
       <form action="{{ route('login') }}" method="POST">
         @csrf
         <div class="input-group mb-3">
-          <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="Email">
+          <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="Email">
           @if ($errors->has('email'))
           <span class="invalid-feedback">
               <strong>{{ $errors->first('email') }}</strong>
@@ -47,25 +47,24 @@
         </div>
         <div class="row">
           <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Запомнить меня
-              </label>
-            </div>
+            <p class="mb-1">
+              <a href="{{ route('forgot') }}" class="fw-bold text-body"><u>Забыли свой пароль ?</u></a>
+            </p>
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Вход</button>
+            <button type="submit" class="btn btn-primary btn-block">Вход</button><br>
           </div>
           <!-- /.col -->
         </div>
       </form>
 
-      <p class="mb-1">
-        <a href="{{ route('forgot') }}">Я забыл свой пароль</a>
+      {{-- <p class="mb-1">
+        <a href="{{ route('forgot') }}" class="fw-bold text-body"><u>Забыли свой пароль ?</u></a>
+      </p> --}}
+      <p class="text-center text-muted mt-5 mb-0">У вас нет аккаунта?
+        <a href="{{ route('register.show') }}" class="fw-bold text-body"><u>Зарегистрироваться</u></a>
       </p>
-
     </div>
     <!-- /.card-body -->
   </div>

@@ -6,18 +6,14 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ForgotPasswordRequest extends FormRequest
 {
-    /**
-     * @return bool
-     */
-    public function authorize()
+   
+    public function authorize():bool
     {
         return true;
     }
 
-    /**
-     * @return array
-     */
-    public function rules()
+
+    public function rules():array
     {
         return [
             'email' => ['required', 'email', 'string', 'exists:users']

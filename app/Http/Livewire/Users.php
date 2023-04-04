@@ -24,7 +24,7 @@ class Users extends Component
     public $selectedRows = [];
     public $selectPageRows = false;
 
-    
+
     public function resetInput()
     {
         $this->name = '';
@@ -52,29 +52,20 @@ class Users extends Component
 
         if($this->photo) {
             $avatar = $this->photo->getClientOriginalName();
+            Storage::putFileAs('/public/avatars', $this->photo, $avatar);
+            $validate['avatar'] = $avatar;
         }
-        Storage::putFileAs('/public/avatars', $this->photo, $avatar);
-        $validate['avatar'] = $avatar;
+        
         User::create($validate);
         $this->dispatchBrowserEvent('close-modal', ['message' => 'пользователь создан успешно!']);
         $this->resetInput();
-        
+
     }
 
 
     public function closeModal()
     {
         $this->resetInput();
-    }
-
-
-    public function showUserInfo(int $id)
-    {
-        $user = User::findOrFail($id);
-        $this->user_id = $user->id;
-        $this->name = $user->name;
-        $this->email = $user->email;
-        $this->db_photo = $user->avatar_url;
     }
 
 
@@ -86,7 +77,6 @@ class Users extends Component
         $this->name = $user->name;
         $this->email = $user->email;
         $this->db_photo = $user->avatar_url;
-        
     }
 
 
@@ -102,12 +92,11 @@ class Users extends Component
             Storage::disk('avatars')->delete($this->user->avatar);
             $avatar = $this->photo->getClientOriginalName();
             Storage::putFileAs('/public/avatars', $this->photo, $avatar);
-            $validate['avatar'] = $avatar; 
+            $validate['avatar'] = $avatar;
         }
-        
+
 
         User::where('id', $this->user->id)->update($validate);
-
         $this->dispatchBrowserEvent('hide-edit-modal', ['message' => 'пользователь обновлено успешно!']);
         $this->resetInput();
 
@@ -120,8 +109,9 @@ class Users extends Component
         $this->dispatchBrowserEvent('delete-confirm');
     }
 
+    
 
-    public function delete()
+    public function delete() 
     {
        $user = User::findOrFail($this->user);
        $user->delete();
@@ -138,7 +128,7 @@ class Users extends Component
         else {
             $this->reset(['selectedRows', 'selectPageRows']);
         }
-       
+
     }
 
     public function getUsersProperty()

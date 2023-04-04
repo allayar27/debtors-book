@@ -15,19 +15,11 @@ class PaidDebts extends Component
 
     protected $paginationTheme = 'bootstrap';
     protected $listeners = ['deleteConfirmed' => 'delete'];
-    public $transactions;
-    public $debtors;
+    private $transactions;
     public $from, $to;
     public $search;
     public  $user_id, $debtor_id, $received_amount, $transaction_type,  $transaction_remark, $transaction_id;
 
-
-
-    public function mount()
-    {
-        $this->debtors = Debtor::orderBy('created_at', 'DESC')->get();
-        $this->transactions = Transaction::where('transaction_type', 'debit')->orderBy('created_at', 'DESC')->get();
-    }
 
 
     protected function rules()
@@ -49,6 +41,7 @@ class PaidDebts extends Component
     public function addNew()
     {
         $this->resetInput();
+        $this->emit('open-create-modal');
     }
     
 
@@ -71,19 +64,16 @@ class PaidDebts extends Component
     }
 
 
-    public function close()
-    {
-        $this->resetInput();
-    }
-
 
     public function edit(int $id)
     {
+        $this->resetInput();
         $paid = Transaction::findOrFail($id);
         $this->transaction_id = $paid->id;
         $this->debtor_id = $paid->debtor_id;
         $this->received_amount = $paid->received_amount;
         $this->transaction_remark = $paid->transaction_remark;
+        $this->emit('open-edit-modal');
     }
 
 
@@ -103,6 +93,7 @@ class PaidDebts extends Component
                 $transaction->debtor->update(['balance' => $transaction->debtor->balance - $decrement]);
             }
         }
+
         Transaction::where('id', $this->transaction_id)->update($validate);
 
         $this->dispatchBrowserEvent('updated', ['message' => 'оплата долга обновлено успешно!']);
@@ -132,20 +123,29 @@ class PaidDebts extends Component
             return $query->whereDate('created_at', '>=', $from)->where('transaction_type', 'debit');
         })->when($this->to, function($query, $to) {
             return $query->whereDate('created_at', '<=', $to)->where('transaction_type', 'debit');
-        })->get();
+        });
     }
 
-
-    public function search()
+ 
+    public function search() 
     {
         $this->transactions = Transaction::when($this->search, function($query) {
             return $query->where('transaction_type', 'debit')->search(trim($this->search));
-        })->get();
+        });
     }
+
+
 
     public function render()
     {
-        return view('livewire.transactions.payd-debts');
+        if ($this->transactions === null) {
+            $this->transactions = Transaction::where('transaction_type', 'debit')
+                ->orderBy('created_at', 'DESC');
+        }
+        return view('livewire.transactions.payd-debts', [
+            'transactions' => $this->transactions->paginate(5),
+            'debtors' => Debtor::orderBy('created_at', 'DESC')->get()
+        ]);
     }
 
 

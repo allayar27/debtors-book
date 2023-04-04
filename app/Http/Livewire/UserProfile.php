@@ -17,15 +17,13 @@ class UserProfile extends Component
     public $current_password;
     public $password;
 
-
     public function mount()
     {
         $this->name = auth()->user()->name;
         $this->email = auth()->user()->email;
-
     }
 
-    public function updatedImage()
+    public function updatedImage() 
     {
         $avatar = $this->image->getClientOriginalName();
         Storage::putFileAs('/public/avatars', $this->image, $avatar);
@@ -37,11 +35,10 @@ class UserProfile extends Component
     {
         $validate = $this->validate([
             'name' => 'required|string|max:55',
-            'email' => 'required|string|email|max:255|unique:users,email,'.auth()->user()->id,
+            'email' => 'required|string|email|max:255|unique:users,email,'.auth()->id(),
         ]);
 
         auth()->user()->update($validate);
-
         $this->emit('nameChanged', auth()->user()->name);
         $this->dispatchBrowserEvent('profileUpdated', ['message' => 'профиль обновлено успешно!']);
     }
@@ -56,8 +53,8 @@ class UserProfile extends Component
 
         if(Hash::check($this->current_password, auth()->user()->password))
         {
-            $user = User::find(auth()->user()->id);
-            $user->password = $this->password;
+            $user = User::find(auth()->id());
+            $user->password = bcrypt($this->password);
             $user->save();
 
             $this->reset();

@@ -14,6 +14,7 @@ class Transaction extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
         'user_id',
         'debtor_id',

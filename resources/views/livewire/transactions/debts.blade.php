@@ -69,17 +69,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                        @foreach ($transactions as $transaction)
+                        @forelse($transactions as $transaction)
                           <tr>
                             <th scope="row">{{ $loop->iteration }}</th>
                             <td>{{ $transaction->created_at }}</td>
                             <td>{{ $transaction->debtor->name }}</td>
                             <td>{{ $transaction->transaction_remark }}</td>
-                            <td>{{ $transaction->pay_amount }}</td>
+                            <td>{{ $transaction->pay_amount }} UZS</td>
                             <td>
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal" wire:click="edit({{ $transaction->id }})">
+                                <button type="button" class="btn btn-primary btn-sm"  wire:click="edit({{ $transaction->id }})">
                                     <i class="fas fa-edit"></i>
-                                </и>
+                                </button>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="deleteConfirm({{ $transaction->id }})">
@@ -88,12 +88,18 @@
                                 </button>
                           </td>
                         </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                              <td colspan="6" style="text-align: center" class="px-6 py-4 whitespace-no-wrap text-sm leading">
+                                {{ __('No debts not found') }}
+                              </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                   </table>
-{{--                   <div class="card-footer d-flex justify-content-end">--}}
-{{--                    {{ $transactions->links() }}--}}
-{{--                  </div> --}}
+                   <div class="card-footer d-flex justify-content-end">
+                    {{ $transactions->links() }}
+                  </div>
                 </div>
                 <!-- /.card-body -->
               </div>
@@ -104,7 +110,7 @@
     </div><!-- /.container-fluid -->
 
     <!-- Modal -->
-      <div class="modal fade" id="createModal"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+      <div class="modal fade" id="createModal"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false" wire:ignore.self>
         <div class="modal-dialog" role="document">
           <form wire:submit.prevent="create">
            <div class="modal-content">
@@ -119,11 +125,13 @@
               <div class="modal-body">
                 <div wire:ignore class="form-group">
                   <label>Имя должника</label><br>
-                  <select  class="select2" wire:model.defer="debtor_id" name="debtor_id" style="width: 70%;">
+                  <select  class="select2" wire:model.lazy="debtor_id" id="select2" name="debtor_id" style="width: 70%;" required>
+                    <option value="" disabled>выберите должника...</option>
                   @foreach($debtors as $debtor)
                   <option value="{{ $debtor->id }}">{{ $debtor->name }}</option>
                   @endforeach
                   </select>
+                  
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Сумма долга</label>
@@ -148,7 +156,7 @@
       </div>
 
       <!-- Modal Edit -->
-      <div class="modal fade" id="editModal"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+      <div class="modal fade" id="editModal"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false" wire:ignore.self>
       <div class="modal-dialog" role="document">
         <form  wire:submit.prevent="update">
          <div class="modal-content">
@@ -163,9 +171,9 @@
             <div class="modal-body">
               <div wire:ignore class="form-group">
                 <label>Имя должника</label><br>
-                <select  class="select2" wire:model.defer="debtor_id" name="debtor_id" style="width: 70%;">
+                <select  class="select2" wire:model.lazy="debtor_id" name="debtor_id" id="debtor_id" style="width: 70%;" >
                 @foreach($debtors as $debtor)
-                <option value="{{ $debtor->id }}" >{{ $debtor->name }}</option>
+                <option value="{{ $debtor->id }}">{{ $debtor->name }}</option>
                 @endforeach
                 </select>
               </div>
@@ -181,7 +189,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" wire:click.prevent="close" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa fa-times mr-1"></i>Отмена</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa fa-times mr-1"></i>Отмена</button>
               <button type="submit" class="btn btn-primary"><i class="fa fa-save mr-1"></i>
                 <span>Изменить</span>
               </button>
@@ -198,12 +206,30 @@
 
 <script>
 
-  $('.select2').select2({
+  window.livewire.on('open-edit-modal', () => {
+          $('#editModal').modal('show');
+
+          $('#debtor_id').select2({
         theme: 'bootstrap4',
-    }).on('change', function(e) {
-        let elementName = $(this).attr('id');
-        var data = $(this).select2("val");
-        @this.set('debtor_id', data);
+      });
+      $('#debtor_id').on('change', function (e) {
+          var data = $('#debtor_id').select2("val");
+          @this.set('debtor_id', data);
+      });
+          
+  })
+
+  window.livewire.on('open-create-modal', () => {
+          $('#createModal').modal('show');
+
+          $('#select2').select2({
+        theme: 'bootstrap4',
+      });
+      $('#select2').on('change', function (e) {
+          var data = $('#select2').select2("val");
+          @this.set('debtor_id', data);
+      });
+          
   })
 
 
@@ -212,9 +238,6 @@
       "positionClass": "toast-top-right",
     }
 
-    window.addEventListener('show-create-modal', event => {
-          $('#createModal').modal('show');
-      })
     window.addEventListener('created', event => {
         $('#createModal').modal('hide');
         toastr.success(event.detail.message, 'Success!');

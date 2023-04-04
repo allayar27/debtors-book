@@ -57,10 +57,11 @@
                 </div>
               </th>
               <th scope="col" width="1%">№</th>
+              <th scope="col" width="3%">Аватар</th>
               <th scope="col" width="10%">Имя</th>
               <th scope="col" width="10%">Email</th>
               <th scope="col" width="10%">Дата регистраций</th>
-              <th scope="col" width="1%" colspan="3">Действия</th>
+              <th scope="col" width="1%" colspan="2">Действия</th>
             </tr>
             </thead>
             <tbody>
@@ -75,22 +76,19 @@
                         <th scope="row">{{ $users->firstItem() + $index }}</th>
                         <td>
                           <img src="{{ $user->avatar_url }}" id="profileImage" style="width: 50px;" class="img img-circle mr-1" alt="">
+                        </td>
+                        <td>
                           {{ $user->name }}
                         </td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->created_at }}</td>
-                        <td>
-                          <button type="button"  class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#showInfoModal" wire:click.prevent="showUserInfo({{ $user->id }})">
-                          <i class="fas fa-eye"></i>
-                          </button>
-                        </td>
                         <td>
                             <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editModal" wire:click.prevent="edit({{ $user->id }})">
                                 <i class="fas fa-edit"></i>
                             </button>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-danger"  wire:click.prevent="deleteConfirm({{ $user->id }})">
+                            <button type="button" class="btn btn-sm btn-danger"  wire:click.prevent="deleteConfirm({{ $user->id }})">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>
@@ -246,39 +244,7 @@
       </div>
 
 
-      <!--Show Info Modal -->
-      <div class="modal fade" id="showInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
-        <div class="modal-dialog" role="document">
-           <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                  <span>Данные пользователя</span>
-                </h5>
-                <button type="button" wire:click.prevent="closeModal" class="close" data-bs-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="form-group">
-                    <label for="name">ID</label>
-                    <p>{{ $this->user_id }}</p>
-                </div>
-                <div class="form-group">
-                    <label for="name">Имя</label>
-                    <p>{{ $this->name }}</p>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Email</label>
-                    <p>{{ $this->email }}</p>
-                </div>
-                <div class="form-group">
-                  <label for="customFile">Фото профиля</label>
-                    <img src="{{ $this->db_photo ?? '' }}" class="img img-circle d-block mt-2 w-50">
-                </div>
-              </div>
-           </div>
-        </div>
-      </div>
+      
   </section>
 </div>
 

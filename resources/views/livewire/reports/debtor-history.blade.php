@@ -90,23 +90,29 @@
                       </tr>
                       </thead>
                       <tbody>
-                          @foreach($debtor->transactions as $transaction)
+                          @forelse($debtor->transactions as $transaction)
                             <tr>
                               <th scope="row">{{ $loop->iteration }}</th>
                               <td>{{ $transaction->created_at }}</td>
                               <td>{{ $transaction->transaction_remark }}</td>
                               @if($transaction->pay_amount > 0)
-                              <td>{{ $transaction->pay_amount }}</td>
+                              <td>{{ $transaction->pay_amount }} UZS</td>
                               @else
                               <td> -/-</td>
                               @endif
                               @if($transaction->received_amount > 0)
-                              <td>{{ $transaction->received_amount }}</td>
+                              <td>{{ $transaction->received_amount }} UZS</td>
                               @else
                               <td> -/- </td>
                               @endif
                             </tr>
-                          @endforeach
+                          @empty
+                            <tr>
+                                <td colspan="6" style="text-align: center" class="px-6 py-4 whitespace-no-wrap text-sm leading">
+                                    {{ __('No data not found') }}
+                                </td>
+                            </tr>
+                          @endforelse
                       </tbody>
                   </table>
                   </div>

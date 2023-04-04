@@ -15,20 +15,24 @@ class AuthController extends Controller
 
     public function index()
     {
+        if (auth()->check()) {
+            return redirect()->route('dashboard');
+        }
         return view('auth.login');
     }
 
 
     public function login(AuthRequest $request){
 
-      $valid = $request->validated();
-
-        if(Auth::attempt($valid)) {
-            return redirect()->intended(route('dashboard'))->with('success', 'Вы успешно вошли в систему!');
+        $valid = $request->validated();
+        
+        if(!Auth::attempt($valid)) {
+            return redirect()->back()->withErrors([
+                'password' => 'неверные логин или пароль!'
+            ]);
         }
-        return redirect()->back()->withErrors([
-            'password' => 'неверные логин или пароль!'
-        ]);
+        
+        return redirect()->route('dashboard')->with('success', 'Вы успешно вошли в систему!');
 
     }
 

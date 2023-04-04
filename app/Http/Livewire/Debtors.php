@@ -3,7 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Debtor;
-use Livewire\Component;
+use Livewire\Component; 
 use Livewire\WithPagination;
 
 class Debtors extends Component

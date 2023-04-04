@@ -22,15 +22,15 @@
   <link rel="stylesheet" href="/admin/dist/css/adminlte.min.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="/admin/plugins/daterangepicker/daterangepicker.css">
-  <!-- summernote -->
-  <link rel="stylesheet" href="/admin/plugins/summernote/summernote-bs4.min.css">
+ 
   <!-- Select2 -->
   <link rel="stylesheet" href="{{ asset('/admin/plugins/select2/css/select2.min.css') }}">
   <link rel="stylesheet" href="{{ asset('/admin/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
   <!--Toastr-->
   <link rel="stylesheet" type="text/css" href="{{ asset('/admin/plugins/toastr/toastr.min.css') }}">
+  <!--sweet alert2-->
+  <link rel="stylesheet" type="text/css" href="{{ asset('/admin/plugins/sweetalert2/sweetalert2.min.css') }}">
+
   <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
   
   
@@ -84,10 +84,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="{{ route('user.profile') }}" x-ref="profileLink">Профиль</a>
             <a class="dropdown-item" href="{{ route('user.profile') }}" x-ref="changePasswordLink">Изменить пароль</a>
-            <form action="{{ route('logout') }}" method="POST">
-              @csrf
-              <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="dropdown-item">Выйти</a>
-            </form>
+            
         </div>
       </li> 
 						<!-- end: User Dropdown -->
@@ -128,8 +125,7 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="/admin/plugins/chart.js/Chart.min.js"></script>
+
 <!-- Sparkline -->
 <script src="/admin/plugins/sparklines/sparkline.js"></script>
 <!-- JQVMap -->
@@ -143,8 +139,7 @@
 
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="/admin/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="/admin/plugins/summernote/summernote-bs4.min.js"></script>
+
 <!-- overlayScrollbars -->
 <script src="/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
@@ -160,19 +155,12 @@
 <!-- Toastr -->
 <script type="text/javascript" src="{{ asset('/admin/plugins/toastr/toastr.min.js') }}"></script>
 <!--sweet alert-->
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript" src="{{ asset('/admin/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 
 
-{{-- <script>
-  Swal.fire({
-  title: 'Error!',
-  text: 'Do you want to continue',
-  icon: 'error',
-  confirmButtonText: 'Cool'
-})
-</script> --}}
+
 @stack('js')
-{{-- @stack('before-livewire-scripts') --}}
+
 <livewire:scripts />
 @stack('scripts')
 

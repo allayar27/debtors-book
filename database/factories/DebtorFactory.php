@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Debtor;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DebtorFactory extends Factory
@@ -21,7 +20,7 @@ class DebtorFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'phone' => $this->faker->numberBetween('100', '900'),
+            'phone' => $this->faker->numberBetween('100', '9000'),
         ];
     }
 }

@@ -12,21 +12,14 @@ class DebtorReport extends Component
 
     protected $paginationTheme = 'bootstrap';
     public $search;
-    public $debtors;
-
-
-    public function mount()
-    {
-        $this->debtors = Debtor::with('transactions')->orderBy('created_at', 'desc')->get();
-    }
-
+    private $debtors;
 
 
     public function search()
     {
        $this->debtors = Debtor::when($this->search, function($query) {
             $query->where('name', 'like', '%'. $this->search.'%');
-        })->get();
+        });
     }
 
 
@@ -34,7 +27,12 @@ class DebtorReport extends Component
 
     public function render()
     {
-        return view('livewire.reports.debtor-report');
+        if($this->debtors === null){
+            $this->debtors = Debtor::with('transactions')->orderBy('created_at', 'desc');
+        }
+        return view('livewire.reports.debtor-report', [
+            'debtors' => $this->debtors->paginate(7)
+        ]);
     }
 
 
