@@ -51,7 +51,7 @@
                         <div class="card-header p-2">
                             <ul class="nav nav-pills" wire:ignore>
                                 <li @click.prevent="currentTab = 'profile'" class="nav-item"><a class="nav-link active"  href="#profile" data-toggle="tab"><i class="fa fa-user mr-1"></i> Изменить профиль</a></li>
-                                <li @click.prevent="currentTab = 'changePassword'" class="nav-item"><a class="nav-link" :class="currentTab === 'changePassword' ? 'active' : ''" href="#changePassword" data-toggle="tab"><i class="fa fa-key mr-1"></i> Изменить пароль</a></li>
+                                <li @click.prevent="currentTab = 'changePassword'" class="nav-item"><a class="nav-link"  href="#changePassword" data-toggle="tab"><i class="fa fa-key mr-1"></i> Изменить пароль</a></li>
                             </ul>
                         </div><!-- /.card-header -->
                         <div class="card-body">
@@ -160,6 +160,16 @@
     <script defer src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
 @endpush
 
+@push('js')
+<script>
+    $(document).ready(function () {
+        Livewire.on('nameChanged', (changedName) => {
+            $('[x-ref="username"]').text(changedName);
+        })
+    });
+</script>
+@endpush
+
 @push('scripts')
 
 <script>
@@ -186,17 +196,3 @@
     });
 </script>
 @endpush
-
-@push('js')
-<script>
-    $(document).ready(function () {
-        Livewire.on('nameChanged', (changedName) => {
-            $('[x-ref="username"]').text(changedName);
-        })
-    });
-</script>
-@endpush
-
-
-
-

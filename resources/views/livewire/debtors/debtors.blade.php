@@ -229,7 +229,7 @@
           </div>
       </section>
 </div>
-
+ 
 @push('scripts')
 <script>
   $(document).ready(function() {
@@ -237,7 +237,7 @@
       "positionClass": "toast-top-right",
     }
 
-    window.addEventListener('hide-create-modal', event => {
+    window.addEventListener('close-create-modal', event => {
         $('#createModal').modal('hide');
         toastr.success(event.detail.message, 'Created!');
     })

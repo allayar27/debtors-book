@@ -15,15 +15,14 @@ use App\Http\Livewire\Users;
 use Illuminate\Support\Facades\Route;
 
 
+Route::middleware('guest')->group(function () {
 
     Route::get('/', [AuthController::class, 'index'])->name('/');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::get('/forgot', [AuthController::class, 'showForgotForm'])->name('forgot');
     Route::post('/forgot_process', [AuthController::class, 'forgot'])->name('forgot_process');
-        
-    Route::get('/register', [RegisterController::class, 'show'])->name('register.show');
-    Route::post('/register_process', [RegisterController::class, 'register'])->name('register.perform');
 
+});
 
 Route::middleware('auth')->prefix('home')->group(function () {
 

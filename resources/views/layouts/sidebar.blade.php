@@ -9,9 +9,9 @@
     <div class="sidebar">
 
       <!-- SidebarSearch Form -->
-      <div class="form-inline">
+       <div class="form-inline">
         <a href="{{ route('dashboard') }}" class="brand-link">
-          <img src="{{ auth()->user()->avatar_url }}" id="profileImage" alt="User Image" class="brand-image img-circle elevation-3" style="opacity: .8">
+          <img src="{{ auth()->user()->avatar_url }}" id="profileImage" alt="User Image" class="brand-image img-circle elevation-2" >
           <span href="#" class="brand-text font-weight-light" x-ref="username">{{ auth()->user()->name }}</span>
         </a>
       </div>

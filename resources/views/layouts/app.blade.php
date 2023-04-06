@@ -158,11 +158,16 @@
 <script type="text/javascript" src="{{ asset('/admin/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 
 
-
 @stack('js')
 
+@stack('before-livewire-scripts')
+
 <livewire:scripts />
+
+@stack('after-livewire-scripts')
+
 @stack('scripts')
+ 
 
 </body>
 

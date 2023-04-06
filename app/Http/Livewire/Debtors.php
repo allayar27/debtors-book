@@ -44,7 +44,7 @@ class Debtors extends Component
 
         Debtor::create($validate);
         $this->resetInput();
-        $this->dispatchBrowserEvent('hide-create-modal', ['message' => 'должник создан успешно!']);
+        $this->dispatchBrowserEvent('close-create-modal', ['message' => 'должник создан успешно!']);
     }
 
 
@@ -130,7 +130,7 @@ class Debtors extends Component
         })->orderBy('id', $this->orderBy)->paginate($this->perPage);
     }
 
-
+ 
     public function deleteSelectedRows()
     {
         Debtor::whereIn('id', $this->selectedRows)->delete();

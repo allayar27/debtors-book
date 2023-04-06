@@ -21,7 +21,7 @@
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="{{ url('/') }}" class="h1"><b>Admin</b></a>
+      <a href="#" class="h1"><b>Debt Note</b></a>
     </div>
     <div class="card-body">
       <p class="login-box-msg">Войдите, чтобы начать сеанс</p>
@@ -59,12 +59,8 @@
         </div>
       </form>
 
-      {{-- <p class="mb-1">
-        <a href="{{ route('forgot') }}" class="fw-bold text-body"><u>Забыли свой пароль ?</u></a>
-      </p> --}}
-      <p class="text-center text-muted mt-5 mb-0">У вас нет аккаунта?
-        <a href="{{ route('register.show') }}" class="fw-bold text-body"><u>Зарегистрироваться</u></a>
-      </p>
+     
+      
     </div>
     <!-- /.card-body -->
   </div>
