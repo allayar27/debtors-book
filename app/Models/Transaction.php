@@ -26,8 +26,6 @@ class Transaction extends Model
 
     
 
-
-
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -55,7 +53,8 @@ class Transaction extends Model
 
     public function scopeTotalDebts():float
     {
-        return DB::table('transactions')->where('transaction_type', 'credit')->get()->sum('pay_amount');
+        //return $this->where('transaction_type', 'credit')->sum('pay_amount');
+       return DB::table('transactions')->where('transaction_type', 'credit')->get()->sum('pay_amount');
     }
 
     public function scopeTotalDebtsPaid():float
@@ -63,24 +62,24 @@ class Transaction extends Model
         return DB::table('transactions')->where('transaction_type', 'debit')->get()->sum('received_amount');
     }
 
-    public function scopeShowDebtsPercent(): float
-    {
-       $credit = $this->scopeTotalDebts();
-       $debit = $this->scopeTotalDebtsPaid();
-       if($credit > 0){
-           return round(($credit - $debit) * 100 / $credit);
-       }
-        return 0;
-    }
+    // public function scopeShowDebtsPercent(): int
+    // {
+    //    $credit = $this->totalDebts();
+    //    $debit = $this->totalDebtsPaid();
+    //    if($credit > 0){
+    //        return round(($credit - $debit) * 100 / $credit);
+    //    }
+    //     return 0;
+    // }
 
-    public function scopeShowPaidDebtsPercent()
-    {
-       $credit = $this->scopeTotalDebts();
-       $debit = $this->scopeTotalDebtsPaid();
-       if($credit > 0) {
-           return ($debit * 100) / $credit;
-       }
-       return 0;
-    }
+    // public function scopeShowPaidDebtsPercent():int
+    // {
+    //    $credit = $this->totalDebts();
+    //    $debit = $this->totalDebtsPaid();
+    //    if($credit > 0) {
+    //        return ($debit * 100) / $credit;
+    //    }
+    //    return 0;
+    // }
 
 }

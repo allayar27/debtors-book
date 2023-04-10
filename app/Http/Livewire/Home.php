@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Livewire;
 
 use App\Models\Debtor;
@@ -12,16 +10,15 @@ use Livewire\Component;
 class Home extends Component
 {
     public $user;
-    public $debtor;
+    public $debtor; 
     public $transaction;
 
     
-    public function mount(User $user, Debtor $debtor, Transaction $transaction)
+    public function mount()
     {
-        $this->user = $user->count();
-        $this->debtor = $debtor;
-        $this->transaction = $transaction;
-        
+        $this->user = User::count();
+        $this->debtor = new Debtor();
+        $this->transaction = new Transaction();
     }
 
     

@@ -65,7 +65,7 @@
           <!-- small box -->
           <div class="small-box bg-danger">
             <div class="inner">
-              <h4>{{ $debtor->showDebtorsPercentWhereHasDebts() }}%</h4>
+              <h4>{{ $debtor->WhereHasDebts() }}</h4>
               <p>Имееть долги</p>
             </div>
             <div class="icon">
@@ -100,29 +100,6 @@
         </div>
 
         <!-- ./col -->
-      </div>
-      <div class="card-footer">
-        <div class="row">
-          <div class="col-sm-6 col-6">
-            <div class="description-block border-right">
-              <span class="description-percentage text-danger"><i class="fas fa-{{ $transaction->showDebtsPercent() >= 0 ? 'caret-up' : 'caret-down'}}"></i> {{ $transaction->showDebtsPercent() }}%</span>
-              <h5 class="description-header">{{ $transaction->totalDebts() }} UZS</h5>
-              <span class="description-text">Общая сумма долгов</span>
-            </div>
-            <!-- /.description-block -->
-          </div>
-          <!-- /.col -->
-          <div class="col-sm-6 col-6">
-            <div class="description-block border-right">
-              <span class="description-percentage text-success"><i class="fas fa-{{ $transaction->showPaidDebtsPercent() >= 50 ? 'caret-up' : 'caret-down' }}"></i> {{ $transaction->showPaidDebtsPercent() }}%</span>
-              <h5 class="description-header">{{ $transaction->totalDebtsPaid() }} UZS</h5>
-              <span class="description-text">Общая сумма оплаченных долгов</span>
-            </div>
-            <!-- /.description-block -->
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
       </div>
       <!-- /.row -->
       <!-- Main row -->

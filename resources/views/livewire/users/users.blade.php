@@ -109,7 +109,7 @@
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">
                     <span>Добавить нового пользователя</span>
-                  </h5>
+                  </h5> 
                   <button type="button" wire:click.prevent="closeModal" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>

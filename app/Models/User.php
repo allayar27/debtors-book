@@ -40,7 +40,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
 
-    public function transactions()
+    public function transactions() 
     {
         return $this->hasMany(Transaction::class);
     }
@@ -50,7 +50,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getCreatedAtAttribute($value)
     {
-        return Carbon::parse($value)->format('d/m/Y');
+        return Carbon::parse($value)->format('d/m/Y'); 
     }
 
 

@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -25,9 +24,10 @@ class UserProfile extends Component
 
     public function updatedImage() 
     {
-        $avatar = $this->image->getClientOriginalName();
-        Storage::putFileAs('/public/avatars', $this->image, $avatar);
-        auth()->user()->update(['avatar' => $avatar]);
+        $path = $this->image->store('/', 'avatars');
+
+        auth()->user()->update(['avatar' => $path]);
+
         $this->dispatchBrowserEvent('avatar updated', ['message' => 'аватар пользователя обновлено успешно!']);
     }
 
@@ -39,6 +39,7 @@ class UserProfile extends Component
         ]);
 
         auth()->user()->update($validate);
+        
         $this->emit('nameChanged', auth()->user()->name);
         $this->dispatchBrowserEvent('profileUpdated', ['message' => 'профиль обновлено успешно!']);
     }

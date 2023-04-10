@@ -46,7 +46,7 @@ git clone https://github.com/allayar27/debtors-book.git
 5. Запустите миграцию с сидами с выполнив команду:
 
 ```bash
- php artisan migrate --seed
+ php artisan migrate:fresh --seed
 ``` 
   
 6. Для запуска тестов создайте отдельное тестовое окружение .env.testing и тестовую базу.

@@ -19,7 +19,7 @@
                   
             </div>
             <table class="table table-striped">
-                <thead>
+                <thead> 
                 <tr>
                     <th scope="col" width="1%">№</th>
                     <th scope="col" width="10%">Имя</th>
@@ -34,8 +34,8 @@
                         <tr>
                             <th scope="row">{{ $loop->iteration }}</th>
                             <td>{{ $debtor->name }}</td>
-                            <td>{{ $debtor->transactions->sum('pay_amount') }} UZS</td>
-                            <td>{{ $debtor->transactions->sum('received_amount') }} UZS</td>
+                            <td>{{ $debtor->transactions()->sum('pay_amount') }} UZS</td>
+                            <td>{{ $debtor->transactions()->sum('received_amount') }} UZS</td>
                             <td>{{ $debtor->balance }} UZS</td>
                             <td>
                                 <a href="{{ route('debtor-history', $debtor->id) }}" class="btn btn-primary btn-sm">

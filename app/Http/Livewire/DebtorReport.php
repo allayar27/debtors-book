@@ -28,10 +28,10 @@ class DebtorReport extends Component
     public function render()
     {
         if($this->debtors === null){
-            $this->debtors = Debtor::with('transactions')->orderBy('created_at', 'desc');
+           $debtors = $this->debtors = Debtor::whereHas('transactions')->select(['id', 'name', 'balance']);
         }
         return view('livewire.reports.debtor-report', [
-            'debtors' => $this->debtors->paginate(7)
+            'debtors' => $debtors->paginate(2)
         ]);
     }
 

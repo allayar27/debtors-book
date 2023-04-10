@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Debtor;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component; 
 use Livewire\WithPagination;
 
@@ -87,7 +88,7 @@ class Debtors extends Component
             $validate['reserve_phone'] = $this->reserve_phone;
         }
         
-        Debtor::where('id', $this->debtor->id)->update($validate);
+        DB::table('debtors')->where('id', $this->debtor->id)->update($validate);
 
         $this->dispatchBrowserEvent('hide-edit-modal', ['message' => 'должник обновлено успешно!']);
         $this->resetInput();
@@ -103,7 +104,7 @@ class Debtors extends Component
 
     public function delete()
     {
-        $debtor = Debtor::findOrFail($this->debtor);
+        $debtor = Debtor::find($this->debtor);
         $debtor->delete();
         $this->dispatchBrowserEvent('deleted', ['message' => 'должник удалено успешно!']);
     }
@@ -125,7 +126,7 @@ class Debtors extends Component
 
     public function getDebtorsProperty()
     {
-       return Debtor::when($this->search, function($query, $search) {
+       return DB::table('debtors')->when($this->search, function($query, $search) {
             $query->where('name', 'like', '%'. $search.'%');
         })->orderBy('id', $this->orderBy)->paginate($this->perPage);
     }

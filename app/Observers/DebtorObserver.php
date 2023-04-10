@@ -6,7 +6,6 @@ use App\Models\Debtor;
 use App\Models\User;
 use App\Notifications\debtor\DebtorNotification;
 use App\Notifications\debtor\DeleteDebtorNotification;
-
 use Illuminate\Support\Facades\Notification;
 
 class DebtorObserver
@@ -14,8 +13,8 @@ class DebtorObserver
 
     public function created(Debtor $debtor)
     {
-        
-        $user = User::all();
+
+        $user = User::whereId(1)->get();
         Notification::send($user, new DebtorNotification($debtor));
     }
 
@@ -26,10 +25,10 @@ class DebtorObserver
         $debtor->transactions()->delete();
     }
 
-    
+
     public function deleted(Debtor $debtor)
     {
-        $user = User::all();
+        $user = User::whereId(1)->get();
         Notification::send($user, new DeleteDebtorNotification($debtor));
     }
 
