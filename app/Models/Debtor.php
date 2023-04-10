@@ -23,7 +23,7 @@ class Debtor extends Model
         return $this->hasMany(Transaction::class);
     }
 
-
+ 
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('d/m/Y');
@@ -32,19 +32,12 @@ class Debtor extends Model
 
     public function scopeWhereHasDebts(Builder $query)
     {
-        $query->whereHas('transactions', function($transaction) {
+       $debtor = $query->whereHas('transactions', function($transaction) {
             $transaction->where('transaction_type', 'credit');
         })->get();
+
+        return $debtor->count();
     }
 
-    public function scopeShowDebtorsPercentWhereHasDebts()
-    {
-        $total = DB::table('debtors')->count();
-        if($total > 0){
-            $percent = round($this->whereHasDebts()->count() * 100 / $total);
-            return $percent;
-        }
 
-        return 0;
-    }
 }

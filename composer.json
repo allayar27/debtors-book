@@ -19,6 +19,7 @@
         "spatie/laravel-query-builder": "^4.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.7",
         "barryvdh/laravel-ide-helper": "^2.13",
         "facade/ignition": "^2.3.6",
         "fzaninotto/faker": "^1.9.1",

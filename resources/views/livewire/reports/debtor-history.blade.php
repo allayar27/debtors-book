@@ -1,12 +1,12 @@
 <div class="bg-light p-4 rounded">
       <h4>История Должника</h4><br>
       <div class="col-sm-6">
-          <span class='text-info'>Имя: </span><span>{{ $debtor->name }}</span><br>
-          <span class='text-info'>Номер телефона: </span><span>{{ $debtor->phone }}</span><br>
+          <span class='text-info'>Имя: </span><span> {{ $debtor->name }}</span><br>
+          <span class='text-info'>Номер телефона: </span><span> {{ $debtor->phone }}</span><br>
         @if($debtor->balance <= 0)
-          <span class='text-info'>Баланс: </span><span class='text-danger'>{{ $debtor->balance }}</span><br>
+          <span class='text-info'>Баланс: </span><span class='text-danger'> {{ $debtor->balance }}</span><br>
           @else
-          <label class='text-info'>Баланс: </label><span class='text-success'>{{ $debtor->balance }}</span><br>
+          <label class='text-info'>Баланс: </label><span class='text-success'> {{ $debtor->balance }}</span><br>
         @endif
       </div>
       <section class="content-header">
@@ -22,10 +22,10 @@
                       <div class="dropdown-menu" role="menu" style="">
                         <a wire:click.prevent="getPaidDebts()" class="dropdown-item" href="#">оплаченные долги</a>
                         <a wire:click.prevent="getUnpaidDebts()" class="dropdown-item" href="#">неоплаченные доги</a>
-                      </div>
+                      </div> 
                     </div>
                       <div class="btn-group ml-2">
-                        <button type="button" class="btn btn-success"><i class="far fa-calendar-alt"></i>диапазон дат</button>
+                        <button type="button" class="btn btn-success"><i class="far fa-calendar-alt"></i>  диапазон дат</button>
                         <button type="button" class="btn btn-success dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
                           <span class="sr-only">Toggle Dropdown</span>
                         </button>

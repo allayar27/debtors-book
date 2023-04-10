@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Debtor;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Livewire\Component;
@@ -19,8 +20,6 @@ class TransactionHistory extends Component
 
 
     
-
-
     public function getpaidDebts()
     {
         $this->transactions = Transaction::where('transaction_type', 'debit')->orderBy('created_at', 'desc');
@@ -87,7 +86,7 @@ class TransactionHistory extends Component
     public function render()
     {
         if($this->transactions === null){
-            $this->transactions = Transaction::orderBy('created_at', 'desc');
+           $this->transactions = Transaction::query()->withAggregate('debtor', 'name')->orderByDesc('created_at');
         }
         return view('livewire.transactions.transaction-history', [
             'transactions' => $this->transactions->paginate(5)

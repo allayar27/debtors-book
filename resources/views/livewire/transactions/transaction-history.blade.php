@@ -82,7 +82,7 @@
                         <tr>
                             <th scope="row">{{ $loop->iteration }}</th>
                             <td>{{ $transaction->created_at }}</td>
-                            <td>{{ $transaction->debtor->name }}</td>
+                            <td>{{ $transaction->debtor_name }}</td>
                             <td>{{ $transaction->transaction_remark }}</td>
                             @if($transaction->pay_amount > 0)
                                 <td>{{ $transaction->pay_amount }} UZS</td>
@@ -91,7 +91,7 @@
                             @endif
                             @if($transaction->received_amount > 0)
                                 <td>{{ $transaction->received_amount }} UZS</td>
-                            @else
+                            @else 
                                 <td> -- </td>
                             @endif
                         </tr>

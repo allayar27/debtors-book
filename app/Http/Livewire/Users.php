@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -56,6 +57,8 @@ class Users extends Component
             $validate['avatar'] = $avatar;
         }
         
+        $validate['password'] = bcrypt($validate['password']);
+        
         User::create($validate);
         $this->dispatchBrowserEvent('close-modal', ['message' => 'пользователь создан успешно!']);
         $this->resetInput();
@@ -96,7 +99,7 @@ class Users extends Component
         }
 
 
-        User::where('id', $this->user->id)->update($validate);
+        DB::table('users')->where('id', $this->user->id)->update($validate);
         $this->dispatchBrowserEvent('hide-edit-modal', ['message' => 'пользователь обновлено успешно!']);
         $this->resetInput();
 
@@ -115,6 +118,7 @@ class Users extends Component
     {
        $user = User::findOrFail($this->user);
        $user->delete();
+       Storage::disk('avatars')->delete($this->user->avatar);
        $this->dispatchBrowserEvent('deleted', ['message' => 'пользователь удалено успешно!']);
     }
 
@@ -135,7 +139,8 @@ class Users extends Component
     {
        return User::when($this->search, function($query, $search) {
             $query->where('name', 'like', '%'. $search.'%');
-        })->orderBy('id', $this->orderBy)->paginate($this->perPage);
+        })->select(['id', 'avatar', 'name', 'email', 'created_at'])
+        ->orderBy('id', $this->orderBy)->paginate($this->perPage);
 
     }
 

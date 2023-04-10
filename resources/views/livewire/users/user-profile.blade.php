@@ -16,7 +16,7 @@
         </div><!-- /.container-fluid -->
     </section>
 
-    <!-- Main content -->
+    <!-- Main content --> 
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -26,8 +26,9 @@
                     <div class="card card-primary card-outline">
                         <div class="card-body box-profile">
                             <div class="text-center" x-data="{ imagePreview: '{{ auth()->user()->avatar_url }}' }">
-                                <input wire:model="image" type="file" class="d-none" x-ref="image" x-on:change="
-                                        reader = new FileReader();
+                                <input wire:model="image" type="file" class="d-none" x-ref="image" 
+                                        x-on:change="
+                                        const reader = new FileReader();
                                         reader.onload = (event) => {
                                             imagePreview = event.target.result;
                                             document.getElementById('profileImage').src = `${imagePreview}`;

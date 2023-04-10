@@ -10,8 +10,8 @@
 
       <!-- SidebarSearch Form -->
        <div class="form-inline">
-        <a href="{{ route('dashboard') }}" class="brand-link">
-          <img src="{{ auth()->user()->avatar_url }}" id="profileImage" alt="User Image" class="brand-image img-circle elevation-2" >
+        <a href="#" class="brand-link">
+          <img src="{{ auth()->user()->avatar_url }}" id="profileImage"  class="brand-image img-circle elevation-3" alt="User Image" style="opacity: .8">
           <span href="#" class="brand-text font-weight-light" x-ref="username">{{ auth()->user()->name }}</span>
         </a>
       </div>

@@ -10,21 +10,17 @@
             @if(count($notifications) > 0)
             <span class="dropdown-item dropdown-header">{{ count($notifications) }} Notifications</span>
             @foreach($notifications as $notification)
-{{--            <div class="dropdown-divider"></div>--}}
-{{--            <a href="#" class="dropdown-item">--}}
-{{--                <i class="fas fa-envelope mr-2"></i> 4 new messages--}}
-{{--                <span class="float-right text-muted text-sm">3 mins</span>--}}
-{{--            </a>--}}
+
             <div class="dropdown-divider"></div>
             <a href="" wire:click.prevent="marked('{{ $notification['id'] }}')"   class="dropdown-item">
                 @if($notification['type'] == 'App\Notifications\UserNotification')
-                    <i class="fas fa-user mr-2"></i> {{ $notification['data']['name'] }} <i>зарегистрирован</i>
+                    <i class="fas fa-users mr-1"></i> {{ $notification['data']['name'] }} <i style="color: green">registered</i>
                 @endif
                 @if($notification['type'] == 'App\Notifications\debtor\DebtorNotification')
-                    <i class="fas fa-users mr-2" style="color: blue"></i><i style="color: green">{{ ($notification['data']['debtor_name']) }} было создано</i>
+                    <i class="fas fa-address-book mr-1" style="color: blue"></i><i style="color: green">{{ ($notification['data']['debtor_name']) }} created</i>
                 @endif
                 @if($notification['type'] == 'App\Notifications\debtor\DeleteDebtorNotification')
-                    <i class="fas fa-users mr-2" style="color: red"></i><i style="color: red">{{ ($notification['data']['debtor_name']) }} было удалено</i>
+                    <i class="fas fa-address-book mr-1" style="color: red"></i><i style="color: red">{{ ($notification['data']['debtor_name']) }} deleted</i>
                 @endif
                 <span class="float-right text-muted text-sm">{{ \Carbon\Carbon::parse($notification['created_at'])->diffForHumans() }}</span>
             </a>

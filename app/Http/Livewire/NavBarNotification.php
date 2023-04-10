@@ -17,7 +17,8 @@ class NavBarNotification extends Component
     public function render()
     {
         return view('livewire.notifications.nav-bar-notification', [
-            'notifications' => auth()->user()->unreadNotifications()->limit(5)->get()->toArray()
+            'notifications' => auth()->user()->unreadNotifications()
+                            ->take(5)->get()->toArray()
         ]);
     }
 }

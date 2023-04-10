@@ -22,7 +22,7 @@ class DebtorHistory extends Component
 
 
     public function getPaidDebts()
-    {
+    { 
         $this->debtor->transactions = Transaction::whereBelongsTo($this->debtor)
                                                  ->where('transaction_type', 'debit')
                                                  ->get();
@@ -85,9 +85,9 @@ class DebtorHistory extends Component
     public function getBetweenTwoDate()
     {
         $this->debtor->transactions = Transaction::whereBelongsTo($this->debtor)->when($this->from, function($query, $from) {
-             $query->whereDate('created_at', '>=', $from);
+             $query->whereDate('created_at', ">=", $from);
         })->when($this->to, function($query, $to) {
-             $query->whereDate('created_at', '<=', $to);
+             $query->whereDate('created_at', "<=", $to);
         })->get();
     }
 

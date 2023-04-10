@@ -4,8 +4,8 @@ namespace App\Http\Livewire;
 
 use App\Models\Debtor;
 use App\Models\Transaction;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -20,6 +20,8 @@ class PaidDebts extends Component
     public $search;
     public  $user_id, $debtor_id, $received_amount, $transaction_type,  $transaction_remark, $transaction_id;
 
+    public $orderBy = 'ASC';
+    public $perPage = 5;
 
 
     protected function rules()
@@ -48,9 +50,11 @@ class PaidDebts extends Component
     public function create()
     {
         $validate = $this->validate();
-        $debtor = Debtor::find($this->debtor_id);
-        $debtor->update(['balance' => $debtor->balance + $validate['received_amount']]);
+        $debtor = Debtor::find($this->debtor_id)->first();
+        
         Transaction::create($validate);
+        $debtor->update(['balance' => $debtor->balance + $validate['received_amount']]);
+
         $this->resetInput();
         $this->dispatchBrowserEvent('created', ['message' => 'оплата долга создан успешно!']);
     }
@@ -80,21 +84,21 @@ class PaidDebts extends Component
     public function update()
     {
         $validate = $this->validate();
-        $transaction = Transaction::find($this->transaction_id);
+        $transaction = Transaction::find($this->transaction_id)->first();
 
         if($validate['received_amount'] > 0)
         {
             if($validate['received_amount'] > $transaction->received_amount){
                 $increment = $validate['received_amount'] - $transaction->received_amount;
-                $transaction->debtor->update(['balance' => $transaction->debtor->balance + $increment]);
+                $transaction->debtor()->update(['balance' => $transaction->debtor->balance + $increment]);
             }
             elseif($validate['received_amount'] < $transaction->received_amount){
                 $decrement = $transaction->received_amount - $validate['received_amount'];
-                $transaction->debtor->update(['balance' => $transaction->debtor->balance - $decrement]);
+                $transaction->debtor()->update(['balance' => $transaction->debtor->balance - $decrement]);
             }
         }
 
-        Transaction::where('id', $this->transaction_id)->update($validate);
+        $transaction->update($validate);
 
         $this->dispatchBrowserEvent('updated', ['message' => 'оплата долга обновлено успешно!']);
         $this->resetInput();
@@ -110,8 +114,8 @@ class PaidDebts extends Component
 
     public function delete()
     {
-        $transaction = Transaction::findOrFail($this->transaction_id);
-        $transaction->debtor->update(['balance' => $transaction->debtor->balance - $transaction->received_amount]);
+        $transaction = Transaction::findOrFail($this->transaction_id)->first();
+        $transaction->debtor()->update(['balance' => $transaction->debtor->balance - $transaction->received_amount]);
         $transaction->delete();
         $this->dispatchBrowserEvent('deleted', ['message' => 'оплата долга удалено успешно!']);
     }
@@ -139,12 +143,12 @@ class PaidDebts extends Component
     public function render()
     {
         if ($this->transactions === null) {
-            $this->transactions = Transaction::where('transaction_type', 'debit')
-                ->orderBy('created_at', 'DESC');
+            $this->transactions = Transaction::with('debtor')->where('transaction_type', 'debit')
+                ->orderBy('id', $this->orderBy);
         }
         return view('livewire.transactions.payd-debts', [
-            'transactions' => $this->transactions->paginate(5),
-            'debtors' => Debtor::orderBy('created_at', 'DESC')->get()
+            'transactions' => $this->transactions->paginate($this->perPage),
+            'debtors' => DB::table('debtors')->select(['id', 'name'])->get()
         ]);
     }
 

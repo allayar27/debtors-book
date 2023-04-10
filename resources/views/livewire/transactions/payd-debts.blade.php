@@ -10,7 +10,7 @@
               <option value="ASC">по возрастанию</option>
               <option value="DESC">по убыванию</option>
             </select>
-            <select class="custom-select" style="width: auto;" data-sortOrder>
+            <select class="custom-select" wire:model="perPage" style="width: auto;" data-sortOrder>
                 <option value="5">5</option>
                 <option value="15">15</option>
                 <option value="25">25</option>
@@ -163,7 +163,7 @@
               <h5 class="modal-title" id="exampleModalLabel">
                 <span>Изменить долг</span>
               </h5>
-              <button type="button" wire:click.prevent="close" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <button type="button"  class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -174,7 +174,7 @@
                 @foreach($debtors as $debtor)
                 <option value="{{ $debtor->id }}">{{ $debtor->name }}</option>
                 @endforeach
-                </select>
+                </select> 
               </div>
               <div class="form-group">
                   <label for="exampleInputEmail1">Сумма оплаты</label>
