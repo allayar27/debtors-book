@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class UpdateUserPassword
 {
-    /** @param User $user */
+    /** @param User $user **/
     public function handle(User $user)
     {
         $password = Str::random();
