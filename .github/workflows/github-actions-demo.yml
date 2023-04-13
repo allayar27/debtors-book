@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup PHP
-        uses: shivammathur/setup-php
+        uses: actions/checkout@v2
         with:
           php-version: 7.4 # Измените на версию, нужную вам
           extensions: mbstring, bcmath # Установите нужные вам php-расширения
