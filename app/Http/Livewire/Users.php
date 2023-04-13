@@ -56,9 +56,9 @@ class Users extends Component
             Storage::putFileAs('/public/avatars', $this->photo, $avatar);
             $validate['avatar'] = $avatar;
         }
-        
+
         $validate['password'] = bcrypt($validate['password']);
-        
+
         User::create($validate);
         $this->dispatchBrowserEvent('close-modal', ['message' => 'пользователь создан успешно!']);
         $this->resetInput();
@@ -112,13 +112,12 @@ class Users extends Component
         $this->dispatchBrowserEvent('delete-confirm');
     }
 
-    
 
-    public function delete() 
+
+    public function delete()
     {
        $user = User::findOrFail($this->user);
        $user->delete();
-       Storage::disk('avatars')->delete($this->user->avatar);
        $this->dispatchBrowserEvent('deleted', ['message' => 'пользователь удалено успешно!']);
     }
 
