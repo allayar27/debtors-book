@@ -118,7 +118,6 @@ class Users extends Component
     {
        $user = User::findOrFail($this->user);
        $user->delete();
-       Storage::disk('avatars')->delete($this->user->avatar);
        $this->dispatchBrowserEvent('deleted', ['message' => 'пользователь удалено успешно!']);
     }
 
