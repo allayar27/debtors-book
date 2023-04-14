@@ -23,7 +23,7 @@ jobs:
       - name: Generate key
         run: php artisan key:generate
       - name: Directory Permissions
-        run: chmod 775 mydir storage bootstrap/cache
+        run: chmod 775 storage bootstrap/cache
       - name: Create Database
         run: |
           mkdir -p database
